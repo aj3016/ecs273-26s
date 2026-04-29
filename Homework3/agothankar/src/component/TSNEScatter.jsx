@@ -99,13 +99,34 @@ function drawChart(svgElement, data, width, height, selectedStock) {
     .domain([yExtent[0] - 10, yExtent[1] + 10])
     .range([height - margin.bottom, margin.top]);
 
-  svg.append("rect")
-    .attr("width", width)
-    .attr("height", height)
-    .style("fill", "none")
-    .style("pointer-events", "all");
+  svg.append("defs")
+    .append("clipPath")
+    .attr("id", "tsne-clip")
+    .append("rect")
+    .attr("x", margin.left)
+    .attr("y", margin.top)
+    .attr("width", width - margin.left - margin.right)
+    .attr("height", height - margin.top - margin.bottom);
 
-  const chartGroup = svg.append("g").attr("class", "chart-group");
+  const zoom = d3.zoom()
+    .scaleExtent([1, 20])
+    .translateExtent([[margin.left, margin.top], [width - margin.right, height - margin.bottom]])
+    .extent([[margin.left, margin.top], [width - margin.right, height - margin.bottom]])
+    .on("zoom", zoomed);
+
+  svg.append("rect")
+    .attr("class", "zoom-rect")
+    .attr("width", width - margin.left - margin.right)
+    .attr("height", height - margin.top - margin.bottom)
+    .attr("transform", `translate(${margin.left}, ${margin.top})`)
+    .style("fill", "none")
+    .style("pointer-events", "all")
+    .style("cursor", "grab")
+    .call(zoom);
+
+  const chartGroup = svg.append("g")
+    .attr("class", "chart-group")
+    .attr("clip-path", "url(#tsne-clip)");
 
   const tooltip = svg.append("g")
     .attr("class", "scatter-tooltip")
@@ -135,11 +156,11 @@ function drawChart(svgElement, data, width, height, selectedStock) {
   const xAxis = d3.axisBottom(xScale).ticks(10);
   const yAxis = d3.axisLeft(yScale).ticks(10);
 
-  svg.append("g")
+  const xAxisGroup = svg.append("g")
     .attr("transform", `translate(0, ${height - margin.bottom})`)
     .call(xAxis);
 
-  svg.append("g")
+  const yAxisGroup = svg.append("g")
     .attr("transform", `translate(${margin.left}, 0)`)
     .call(yAxis);
 
@@ -160,12 +181,12 @@ function drawChart(svgElement, data, width, height, selectedStock) {
   svg.append("text")
     .attr("x", margin.left + 10)
     .attr("y", margin.top + 14)
-    .text("Hover points for details")
+    .text("Drag or scroll to zoom. Hover points for details")
     .style("font-size", "0.7rem")
     .style("fill", "#666")
     .style("pointer-events", "none");
 
-  chartGroup.selectAll("circle")
+  const circles = chartGroup.selectAll("circle")
     .data(data)
     .join("circle")
     .attr("cx", d => xScale(d.x))
@@ -206,10 +227,12 @@ function drawChart(svgElement, data, width, height, selectedStock) {
       tooltip.style("display", "none");
     });
 
+  let selectedLabel = null;
+  let selectedData = null;
   if (selectedStock) {
-    const selectedData = data.find(d => d.ticker === selectedStock);
+    selectedData = data.find(d => d.ticker === selectedStock);
     if (selectedData) {
-      chartGroup.append("text")
+      selectedLabel = chartGroup.append("text")
         .attr("x", xScale(selectedData.x))
         .attr("y", yScale(selectedData.y) - 15)
         .attr("text-anchor", "middle")
@@ -249,5 +272,23 @@ function drawChart(svgElement, data, width, height, selectedStock) {
     const y = Math.max(pointerY - tooltipHeight - 12, 8);
 
     tooltip.attr("transform", `translate(${x}, ${y})`);
+  }
+
+  function zoomed(event) {
+    const newXScale = event.transform.rescaleX(xScale);
+    const newYScale = event.transform.rescaleY(yScale);
+
+    xAxisGroup.call(xAxis.scale(newXScale));
+    yAxisGroup.call(yAxis.scale(newYScale));
+
+    circles
+      .attr("cx", d => newXScale(d.x))
+      .attr("cy", d => newYScale(d.y));
+
+    if (selectedLabel && selectedData) {
+      selectedLabel
+        .attr("x", newXScale(selectedData.x))
+        .attr("y", newYScale(selectedData.y) - 15);
+    }
   }
 }
