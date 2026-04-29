@@ -1,12 +1,29 @@
-# React + Vite
+# ECS 273 Homework 3
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the Homework 3 React/Vite project for `agothankar`, which is the short form of my student email.
 
-Currently, two official plugins are available:
+## Running the Project
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+From the repository or homework folder, first change into the `agothankar` project directory:
 
-## Expanding the ESLint configuration
+```bash
+cd C:\Users\ajink\Downloads\ECS273\hw3\ecs273-26s\Homework3\agothankar
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Install the project dependencies:
+
+```bash
+npm install
+```
+
+Start the Vite development server:
+
+```bash
+npm run dev
+```
+
+After the server starts, open the local URL shown in the terminal, usually:
+
+```text
+http://localhost:5173/
+```
