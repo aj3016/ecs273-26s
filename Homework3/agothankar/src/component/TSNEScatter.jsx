@@ -2,29 +2,6 @@ import * as d3 from "d3";
 import { useEffect, useRef, useState } from "react";
 import { isEmpty, debounce } from 'lodash';
 
-const sectorMap = {
-    "XOM": "Energy",
-    "CVX": "Energy",
-    "HAL": "Energy",
-    "MMM": "Industrials",
-    "CAT": "Industrials",
-    "DAL": "Industrials",
-    "MCD": "Consumer",
-    "NKE": "Consumer",
-    "KO": "Consumer",
-    "JNJ": "Healthcare",
-    "PFE": "Healthcare",
-    "UNH": "Healthcare",
-    "JPM": "Financials",
-    "GS": "Financials",
-    "BAC": "Financials",
-    "AAPL": "Technology",
-    "MSFT": "Technology",
-    "NVDA": "Technology",
-    "GOOGL": "Technology",
-    "META": "Technology",
-}
-
 const margin = { left: 72, right: 30, top: 30, bottom: 60 };
 
 export function TSNEScatter({ selectedStock }) {
@@ -40,7 +17,7 @@ export function TSNEScatter({ selectedStock }) {
           x: +d['TSNE-1'],
           y: +d['TSNE-2'],
           ticker: d.Ticker,
-          sector: sectorMap[d.Ticker] || "Unknown"
+          sector: d.Sector || "Unknown"
         }));
         setTsneData(parsed);
       })
