@@ -20,16 +20,16 @@ Homework4/client/
 ├── src/
 ├── package.json
 ├── vite.config.js
+├── index.html
+├── eslint.config.js
 └── README.md
 ```
-
-Use the root `Homework4/client` app for the Homework 4 submission.
 
 ## Prerequisites
 
 Install Node.js and npm.
 
-The backend must also be running before the frontend can load data. The frontend expects the API at:
+The backend must also be running before the frontend can load data. See `../server/README.md` for backend setup. The frontend expects the API at:
 
 ```text
 http://localhost:8000
@@ -40,7 +40,7 @@ http://localhost:8000
 From this folder:
 
 ```powershell
-cd C:\Users\ajink\Downloads\ECS273\hw3\ecs273-26s\Homework4\client
+cd .\ecs273-26s\Homework4\client
 npm install
 ```
 
@@ -58,27 +58,6 @@ Open the local URL shown in the terminal, usually:
 http://localhost:5173/
 ```
 
-## Required Backend Steps
-
-In a separate terminal, start MongoDB locally.
-
-Then install and run the server from:
-
-```powershell
-cd C:\Users\ajink\Downloads\ECS273\hw3\ecs273-26s\Homework4\server
-pip install -r requirements.txt
-python import_data.py
-uvicorn main:app --reload
-```
-
-The import script loads data into the MongoDB database:
-
-```text
-stock_agothankar
-```
-
-Run `python import_data.py` again if the data folder changes or if MongoDB has been cleared.
-
 ## API Endpoints Used
 
 The frontend calls these backend endpoints:
@@ -92,23 +71,10 @@ GET /stocknews/{ticker}
 
 ## Troubleshooting
 
-If the page says the stock list was not found, make sure MongoDB is running and run:
-
-```powershell
-python import_data.py
-```
-
-If the browser console shows failed requests to `localhost:8000`, make sure the FastAPI backend is running:
-
-```powershell
-uvicorn main:app --reload
-```
+If the page says the stock list was not found or the browser console shows failed requests to `localhost:8000`, check the backend setup in `../server/README.md`.
 
 If port `5173` is already in use, Vite will show another local URL in the terminal. Open that URL instead.
 
 ## Assumptions
 
-- MongoDB runs locally on the default port `27017`.
 - FastAPI runs locally on port `8000`.
-- Stock data, news files, and `tsne.csv` are stored under `Homework4/server/data/`.
-- The frontend is intentionally not reading local stock files directly for the main visualizations.
