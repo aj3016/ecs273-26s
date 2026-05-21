@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import { useEffect, useRef, useState } from "react";
 import { isEmpty, debounce } from 'lodash';
 
-const margin = { left: 72, right: 24, top: 34, bottom: 42 };
+const margin = { left: 72, right: 24, top: 34, bottom: 52 };
 const API_BASE = "http://localhost:8000";
 
 export function LineChart({ selectedStock }) {
@@ -146,12 +146,15 @@ function drawChart(svgElement, data, width, height) {
     .style("cursor", "grab")
     .call(zoom);
 
-  const xAxis = d3.axisBottom(xScale).ticks(10);
+  const xTickFormat = d3.timeFormat("%b %d, %Y");
+  const xAxis = d3.axisBottom(xScale).ticks(10).tickFormat(xTickFormat);
   const yAxis = d3.axisLeft(yScale).ticks(10);
 
   const xAxisGroup = svg.append("g")
     .attr("transform", `translate(0, ${height - margin.bottom})`)
     .call(xAxis);
+
+  styleXAxisTicks(xAxisGroup);
 
   const yAxisGroup = svg.append("g")
     .attr("transform", `translate(${margin.left}, 0)`)
@@ -221,6 +224,7 @@ function drawChart(svgElement, data, width, height) {
     const newYScale = event.transform.rescaleY(yScale);
 
     xAxisGroup.call(xAxis.scale(newXScale));
+    styleXAxisTicks(xAxisGroup);
     yAxisGroup.call(yAxis.scale(newYScale));
 
     metrics.forEach(metric => {
@@ -231,5 +235,13 @@ function drawChart(svgElement, data, width, height) {
       chartGroup.select(`.line-${metric.key}`)
         .attr("d", line);
     });
+  }
+
+  function styleXAxisTicks(axisGroup) {
+    axisGroup.selectAll("text")
+      .attr("transform", "rotate(-20)")
+      .style("text-anchor", "end")
+      .attr("dx", "-0.6em")
+      .attr("dy", "0.2em");
   }
 }
