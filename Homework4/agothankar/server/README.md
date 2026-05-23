@@ -14,7 +14,7 @@ The frontend in `../client` expects this API to run on port `8000`.
 ## Folder Notes
 
 ```text
-Homework4/server/
+Homework4/agothankar/server/
 ├── data/
 ├── data_scheme.py
 ├── import_data.py
@@ -23,7 +23,7 @@ Homework4/server/
 └── README.md
 ```
 
-Stock data, news files, and `tsne.csv` are expected under `Homework4/server/data/`.
+Stock data, news files, and `tsne.csv` are expected under `Homework4/agothankar/server/data/`.
 
 ## Prerequisites
 
@@ -105,4 +105,4 @@ If MongoDB is not available, confirm that your local MongoDB service is installe
 
 - MongoDB runs locally on the default port `27017`.
 - FastAPI runs locally on port `8000`.
-- Stock data, news files, and `tsne.csv` are stored under `Homework4/server/data/`.
+- Stock data, news files, and `tsne.csv` are stored under `Homework4/agothankar/server/data/`.

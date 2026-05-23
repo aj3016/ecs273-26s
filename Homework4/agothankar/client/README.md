@@ -16,7 +16,7 @@ When a stock is selected, the frontend requests updated stock prices, t-SNE data
 The active frontend is the JavaScript version:
 
 ```text
-Homework4/client/
+Homework4/agothankar/client/
 ├── src/
 ├── package.json
 ├── vite.config.js
@@ -40,7 +40,7 @@ http://localhost:8000
 From this folder:
 
 ```powershell
-cd .\ecs273-26s\Homework4\client
+cd .\ecs273-26s\Homework4\agothankar\client
 npm install
 ```
 
